@@ -3,6 +3,7 @@ package com.example.dbwizz.service;
 
 import com.example.dbwizz.dto.SpwConfigDto;
 import com.example.dbwizz.entity.SpwCommonConfig;
+import com.example.dbwizz.entity.SpwProcessConfig;
 import com.example.dbwizz.repo.SpwCommonConfigRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,12 +46,17 @@ public class SpwCommonConfigService {
 
     @Transactional
     public String deleteConfigByVariable(String variable){
-        spwCommonConfigRepo.deleteByVariable(variable);
-        Optional<SpwCommonConfig> deletedConfig = spwCommonConfigRepo.findFirstByVariable(variable);
-        if(deletedConfig.isPresent()){
-            return "Variable "+ variable + " did not deleted";
-        }else {
-            return "Variable "+ variable + "  deleted";
+        Optional<SpwCommonConfig> getConfig = spwCommonConfigRepo.findFirstByVariable(variable);
+        if(getConfig.isPresent()){
+            spwCommonConfigRepo.deleteByVariable(variable);
+            Optional<SpwCommonConfig> deletedConfig = spwCommonConfigRepo.findFirstByVariable(variable);
+            if(deletedConfig.isPresent()){
+                return "Variable "+ variable + " did not deleted";
+            }else {
+                return "Variable "+ variable + "  deleted";
+            }
+        }else{
+            return "Variable "+ variable + "  is not present";
         }
     }
 

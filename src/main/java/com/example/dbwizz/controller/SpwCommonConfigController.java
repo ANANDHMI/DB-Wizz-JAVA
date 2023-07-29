@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/repo/")
+@RequestMapping("/config")
 @CrossOrigin(origins = "http://localhost:3000")
 public class SpwCommonConfigController {
 
@@ -20,29 +20,29 @@ public class SpwCommonConfigController {
         this.spwCommonConfigService = spwCommonConfigService;
     }
 
-    @GetMapping("/config")
+    @GetMapping("/common")
     public List<SpwConfigDto> getAllConfigs() {
         return spwCommonConfigService.getAllConfigs();
     }
 
-    @PostMapping("/config/add")
+    @PostMapping("/common/add")
     public Optional<SpwConfigDto> addConfig(@RequestBody SpwConfigDto config) {
         return spwCommonConfigService.addConfig(config);
     }
 
-    @DeleteMapping("/config/delete/id/{id}")
+    @DeleteMapping("/common/delete/id/{id}")
     public String deleteConfigById(@RequestParam Long id) {
         return spwCommonConfigService.deleteConfigById(id);
     }
 
-    @DeleteMapping("/config/delete/variable/{variable}")
+    @DeleteMapping("/common/delete/variable/{variable}")
     @Transactional
     public String deleteConfigByVariable(@RequestParam String variable) {
         return spwCommonConfigService.deleteConfigByVariable(variable);
     }
 
 
-    @PostMapping("/config/update")
+    @PostMapping("/common/update")
     public Optional<SpwConfigDto> updateValueByVariable(@RequestBody SpwConfigDto spwConfigDto) {
         return spwCommonConfigService.updateValueByVariable(spwConfigDto);
     }
