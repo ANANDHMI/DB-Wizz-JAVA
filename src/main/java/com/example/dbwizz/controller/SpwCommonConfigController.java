@@ -1,11 +1,13 @@
 package com.example.dbwizz.controller;
 
 
-import com.example.dbwizz.entity.SpwCommonConfig;
+import com.example.dbwizz.dto.SpwConfigDto;
 import com.example.dbwizz.service.SpwCommonConfigService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/repo/")
@@ -19,38 +21,31 @@ public class SpwCommonConfigController {
     }
 
     @GetMapping("/config")
-    public List<SpwCommonConfig> getAllConfigs() {
+    public List<SpwConfigDto> getAllConfigs() {
         return spwCommonConfigService.getAllConfigs();
     }
 
-    @PostMapping("/addConfig")
-    public SpwCommonConfig addConfig(@RequestBody SpwCommonConfig config) {
+    @PostMapping("/config/add")
+    public Optional<SpwConfigDto> addConfig(@RequestBody SpwConfigDto config) {
         return spwCommonConfigService.addConfig(config);
     }
 
-    @DeleteMapping("/deleteConfig/{id}")
-    public SpwCommonConfig deleteConfigById(@RequestParam Long id){
-         SpwCommonConfig beforeDelete=spwCommonConfigService.getConfigById(id);
-         spwCommonConfigService.deleteConfigById(id);
-         return beforeDelete;
-    }
-    @GetMapping("/config/{id}")
-    public SpwCommonConfig getConfigById(@RequestParam Long id){
-        return spwCommonConfigService.getConfigById(id);
+    @DeleteMapping("/config/delete/id/{id}")
+    public String deleteConfigById(@RequestParam Long id) {
+        return spwCommonConfigService.deleteConfigById(id);
     }
 
-    @GetMapping("/config/{variable}")
-    public SpwCommonConfig getConfigByVariable(@RequestParam String variable){
-            return spwCommonConfigService.getConfigByVariable(variable);
+    @DeleteMapping("/config/delete/variable/{variable}")
+    @Transactional
+    public String deleteConfigByVariable(@RequestParam String variable) {
+        return spwCommonConfigService.deleteConfigByVariable(variable);
     }
-    
-    @PostMapping("/updateConfig")
-    public SpwCommonConfig updateValueById(@RequestBody SpwCommonConfig spwCommonConfig){
-        Long configId=spwCommonConfig.getId();
-        if(configId!=null){
-            return spwCommonConfigService.updateValueById(configId,spwCommonConfig);
-        }else {
-            return new SpwCommonConfig();
-        }
+
+
+    @PostMapping("/config/update")
+    public Optional<SpwConfigDto> updateValueByVariable(@RequestBody SpwConfigDto spwConfigDto) {
+        return spwCommonConfigService.updateValueByVariable(spwConfigDto);
     }
+
+
 }
